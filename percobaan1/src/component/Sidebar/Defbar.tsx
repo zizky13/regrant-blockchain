@@ -31,6 +31,7 @@ const Defbar = () => {
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string; avatar: string } | null>(null);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -39,6 +40,13 @@ const Defbar = () => {
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
 
   const toggleSubmenu = (label: string) => {
@@ -79,7 +87,9 @@ const Defbar = () => {
                   >
                     <i className={`${item.icon} text-xs mr-2`}></i>
                     {item.label}
-                    <i className={`fas fa-chevron-down ml-auto text-xs ${openSubmenus[item.label] ? "rotate-180" : ""}`}></i>
+                    <i
+                      className={`fas fa-chevron-down ml-auto text-xs ${openSubmenus[item.label] ? "rotate-180" : ""}`}
+                    ></i>
                   </button>
                   {openSubmenus[item.label] && (
                     <ul className="ml-4 mt-1 text-xs">
@@ -103,20 +113,22 @@ const Defbar = () => {
           ))}
         </ul>
 
-        {/* Footer */}
-        <div className="absolute bottom-4 left-4 flex items-center">
-          <img src="avatar.jpg" alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
-          <span>Spidervape</span>
-        </div>
+        {/* Footer dengan Profil yang Dapat Diklik */}
+        {user ? (
+          <a href="/profile" className="absolute bottom-4 left-4 flex items-center hover:bg-gray-100 p-2 rounded-lg">
+            <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
+            <div>
+              <p className="text-sm font-semibold">{user.name}</p>
+              <p className="text-xs text-gray-500">{user.email}</p>
+            </div>
+          </a>
+        ) : (
+          <div className="absolute bottom-4 left-4 text-sm text-gray-500">Not Logged In</div>
+        )}
       </div>
 
       {/* Overlay untuk Desktop & Mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-grey bg-opacity-5 z-30"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
+      {isOpen && <div className="fixed inset-0 bg-grey bg-opacity-5 z-30" onClick={() => setIsOpen(false)}></div>}
     </div>
   );
 };

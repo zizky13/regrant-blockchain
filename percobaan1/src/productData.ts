@@ -19,7 +19,26 @@ const productData: Product[] = [
         seller: "Toko Elektronik",
         location: "Jakarta"
     },
-    // Tambahkan produk lainnya...
+    {
+        id: 2,
+        name: "Meja Kondangan",
+        description: "Meja Kondangan",
+        price: 150000,
+        imageUrl: "https://example.com/laptop.jpg",
+        seller: "Adinda",
+        location: "Jakarta"
+    },
+    {
+        id: 3,
+        name: "Motor X56R",
+        description: "Motor khusus ",
+        price: 5500000,
+        imageUrl: "https://example.com/laptop.jpg",
+        seller: "RaceVRM",
+        location: "Bandung"
+    },
+    
+    
 ];
 
 export default productData;
